@@ -63,18 +63,45 @@ if (elgg_in_context('widgets')) {
 
 if ($full) {
 
-	$body = elgg_view('output/longtext', array(
+	$tags_label = elgg_echo('exercise:tags');
+	$reason_label = elgg_echo('exercise:reason');
+	$execution_label = elgg_echo('exercise:execution');
+	$body_label = elgg_echo('exercise:body');
+
+	$body = "<h3>$tags_label</h3>";
+
+	$body .= elgg_view('output/tags', array(
+		'value' => $exercise->tags,
+		'class' => 'exercise-tags',
+	));
+	
+	$body .= "<h3>$reason_label</h3>";
+
+	$body .= elgg_view('output/longtext', array(
+		'value' => $exercise->reason,
+		'class' => 'exercise-reason',
+	));
+	
+	$body .= "<h3>$execution_label</h3>";
+	
+	$body .= elgg_view('output/longtext', array(
+		'value' => $exercise->execution,
+		'class' => 'exercise-execution',
+	));	
+	
+	$body .= "<h3>$body_label</h3>";
+
+	$body .= elgg_view('output/longtext', array(
 		'value' => $exercise->description,
-		'class' => 'exercise-post',
+		'class' => 'exercise-body',
 	));
 
 	$params = array(
-		'entity' => $exercise,
 		'title' => false,
 		'metadata' => $metadata,
 		'subtitle' => $subtitle,
 	);
-	$params = $params + $vars;
+		
 	$summary = elgg_view('object/elements/summary', $params);
 
 	echo elgg_view('object/elements/full', array(

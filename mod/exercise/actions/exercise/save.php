@@ -49,12 +49,13 @@ $old_status = $exercise->status;
 // set defaults and required values.
 $values = array(
 	'title' => '',
-	'description' => '',
+	'excerpt' => '',
+	'reason' => '',
 	'execution' => '',
+	'description' => '',
 	'status' => 'draft',
 	'access_id' => ACCESS_DEFAULT,
 	'comments_on' => 'On',
-	'excerpt' => '',
 	'tags' => '',
 	'container_guid' => (int)get_input('container_guid'),
 );

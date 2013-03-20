@@ -49,7 +49,26 @@ $title_input = elgg_view('input/text', array(
 	'value' => $vars['title']
 ));
 
+$tags_label = elgg_echo('exercise:tags');
+$tag_description = elgg_echo('exercise:tag_description');
+$tag_example = elgg_echo('exercise:tag_example');
+$tag_tooltip = elgg_echo('exercise:tag_tooltip');
+$tags_input = elgg_view('input/tags', array(
+	'name' => 'tags',
+	'id' => 'exercise_tags',
+	'value' => $vars['tags']
+));
+
+$reason_label = elgg_echo('exercise:reason');
+$reason_description = elgg_echo('exercise:reason_description');
+$reason_input = elgg_view('input/text', array(
+	'name' => 'reason',
+	'id' => 'exercise_reason',
+	'value' => $vars['reason']
+));
+
 $execution_label = elgg_echo('exercise:execution');
+$execution_description = elgg_echo('exercise:execution_description');
 $execution_input = elgg_view('input/longtext', array(
 	'name' => 'execution',
 	'id' => 'exercise_execution',
@@ -57,6 +76,7 @@ $execution_input = elgg_view('input/longtext', array(
 ));
 
 $body_label = elgg_echo('exercise:body');
+$body_description = elgg_echo('exercise:description_description');
 $body_input = elgg_view('input/longtext', array(
 	'name' => 'description',
 	'id' => 'exercise_description',
@@ -90,13 +110,6 @@ $comments_input = elgg_view('input/dropdown', array(
 	'options_values' => array('On' => elgg_echo('on'), 'Off' => elgg_echo('off'))
 ));
 
-$tags_label = elgg_echo('tags');
-$tags_input = elgg_view('input/tags', array(
-	'name' => 'tags',
-	'id' => 'exercise_tags',
-	'value' => $vars['tags']
-));
-
 $access_label = elgg_echo('access');
 $access_input = elgg_view('input/access', array(
 	'name' => 'access_id',
@@ -121,18 +134,23 @@ $draft_warning
 </div>
 
 <div>
-	<label for="exercise_execution">$execution_label</label>
+	<label for="exercise_tags">$tags_label</label><span> - $tag_description</span> - <a href="#" title="$tag_tooltip">$tag_example</a>
+	$tags_input
+</div>
+
+<div>
+	<label for="exercise_reason">$reason_label</label> <span> - $reason_description</span>
+	$reason_input
+</div>
+
+<div>
+	<label for="exercise_execution">$execution_label</label> <span> - $execution_description</span>
 	$execution_input
 </div>
 
 <div>
-	<label for="exercise_description">$body_label</label>
+	<label for="exercise_description">$body_label</label> <span> - $body_description</span>
 	$body_input
-</div>
-
-<div>
-	<label for="exercise_tags">$tags_label</label>
-	$tags_input
 </div>
 
 $categories_input
