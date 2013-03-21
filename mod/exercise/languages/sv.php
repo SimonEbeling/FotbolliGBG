@@ -34,7 +34,7 @@ $swedish = array(
 	'exercise:body' => 'Praktisera',
 	'exercise:description_description' => 'Ange övningens organistion och steg-för-steg punkter för hur den ska genomföras.',	
 	'exercise:save_status' => 'Senast sparad: ',
-	'exercise:never' => 'Aldirg',
+	'exercise:never' => 'Aldrig',
 
 	// Statuses
 	'exercise:status' => 'Status',
