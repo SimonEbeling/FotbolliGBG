@@ -21,7 +21,7 @@ $swedish = array(
 	'blog:write' => 'Skriv ett inlägg',
 
 	// Editing
-	'blog:add' => 'Slå ett inlägg',
+	'blog:add' => 'Gör ett inlägg',
 	'blog:edit' => 'Redigera inlägg',
 	'blog:excerpt' => 'Utdrag',
 	'blog:body' => 'Text',

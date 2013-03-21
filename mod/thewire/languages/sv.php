@@ -9,6 +9,7 @@ $swedish = array(
 	 * Menu items and titles
 	 */
 	'thewire' => "Passning",
+	'thewire:add' => "Slå en passning",
 	'thewire:everyone' => "Alla passningar",
 	'thewire:user' => "%ss passningar",
 	'thewire:friends' => "Vänners passningar",
