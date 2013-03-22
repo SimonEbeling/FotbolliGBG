@@ -411,6 +411,7 @@ function thewire_setup_entity_menu_items($hook, $type, $value, $params) {
 			'name' => 'reply',
 			'text' => elgg_echo('thewire:reply'),
 			'href' => "thewire/reply/$entity->guid",
+			'link_class' => 'thewire-reply',
 			'priority' => 150,
 		);
 		$value[] = ElggMenuItem::factory($options);

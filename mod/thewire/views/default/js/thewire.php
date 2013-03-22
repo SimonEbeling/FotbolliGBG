@@ -18,6 +18,8 @@ elgg.thewire.init = function() {
 	});
 
 	$(".thewire-previous").live('click', elgg.thewire.viewPrevious);
+	
+	$(".thewire-reply").live('click', elgg.thewire.reply);
 };
 
 /**
@@ -73,12 +75,27 @@ elgg.thewire.viewPrevious = function(event) {
 			success: function(htmlData) {
 				if (htmlData.length > 0) {
 					$previousDiv.html(htmlData);
-					$previousDiv.slideDown(600);
+					$previousDiv.slideDown(400);
 				}
 			}
 		});
 
 	}
+
+	event.preventDefault();
+};
+
+/**
+ * Toogle reply-form
+ *
+ *
+ * @param {Object} event
+ * @return void
+ */
+elgg.thewire.reply = function(event) {
+	var $link = $(this);
+	var postGuid = $link.attr("href").split("/").pop();
+	$('#wire-reply-' + postGuid).toggleClass('hidden');
 
 	event.preventDefault();
 };
