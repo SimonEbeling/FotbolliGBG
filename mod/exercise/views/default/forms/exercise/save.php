@@ -8,6 +8,8 @@
 $exercise = get_entity($vars['guid']);
 $vars['entity'] = $exercise;
 
+$user = elgg_get_logged_in_user_entity ();
+
 $draft_warning = $vars['draft_warning'];
 if ($draft_warning) {
 	$draft_warning = '<span class="message warning">' . $draft_warning . '</span>';
@@ -83,6 +85,8 @@ $body_input = elgg_view('input/longtext', array(
 	'value' => $vars['description']
 ));
 
+$fee = elgg_view('fee/edit', $vars);
+
 $save_status = elgg_echo('exercise:save_status');
 if ($vars['guid']) {
 	$entity = get_entity($vars['guid']);
@@ -128,6 +132,8 @@ echo <<<___HTML
 
 $draft_warning
 
+$categories_input
+
 <div>
 	<label for="exercise_title">$title_label</label>
 	$title_input
@@ -153,7 +159,7 @@ $draft_warning
 	$body_input
 </div>
 
-$categories_input
+$fee
 
 <div>
 	<label for="exercise_comments_on">$comments_label</label>

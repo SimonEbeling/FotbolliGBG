@@ -61,3 +61,7 @@ if ($post->reply) {
 	echo "<div class=\"thewire-parent hidden\" id=\"thewire-previous-{$post->guid}\">";
 	echo "</div>";
 }
+
+$form_vars = array('class' => 'thewire-form hidden', 'id' => 'wire-reply-'.$post->guid);
+echo elgg_view_form('thewire/add', $form_vars, array('post' => $post));
+echo elgg_view('input/urlshortener');

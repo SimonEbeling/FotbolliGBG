@@ -21,11 +21,30 @@ function exercise_init() {
 
 	// add to the main css
 	elgg_extend_view('css/elgg', 'exercise/css');
+	
+	// register the exercise's fee style
+	$fee_css = 'mod/exercise/views/default/fee/css/style.css';
+	elgg_register_css('elgg.feeCSS', $fee_css);		
 
 	// register the exercise's JavaScript
 	$exercise_js = elgg_get_simplecache_url('js', 'exercise/save_draft');
 	elgg_register_simplecache_view('js/exercise/save_draft');
 	elgg_register_js('elgg.exercise', $exercise_js);
+	
+	// register the exercise's fee JavaScript
+	$fee_js = 'mod/exercise/views/default/fee/js/exercise.js';
+	elgg_register_js('elgg.fee', $fee_js);
+	
+	// register the raphael JavaScript
+	$raphael_js = 'mod/exercise/views/default/fee/js/raphael.js';
+	elgg_register_js('elgg.raphael', $raphael_js);
+
+	// register the raphaelJson JavaScript
+	$raphael_json_js = 'mod/exercise/views/default/fee/js/raphael.json.js';
+	elgg_register_js('elgg.raphaelJson', $raphael_json_js);
+
+	elgg_register_ajax_view('fee/ajax/fee_load');
+	elgg_register_ajax_view('fee/ajax/fee_save');	
 
 	// routing of urls
 	elgg_register_page_handler('exercise', 'exercise_page_handler');

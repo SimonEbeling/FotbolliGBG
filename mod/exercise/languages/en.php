@@ -80,7 +80,11 @@ View and comment on the new exercise post:
 	'exercise:widget:description' => 'Display your latest exercise posts',
 	'exercise:moreexercises' => 'More exercise posts',
 	'exercise:numbertodisplay' => 'Number of exercise posts to display',
-	'exercise:noexercises' => 'No exercise posts'
+	'exercise:noexercises' => 'No exercise posts',
+	
+	// Football exercise editor
+	'exercise:fee' => 'Graphics'
+	
 );
 
 add_translation('en', $english);

@@ -275,6 +275,10 @@ function exercise_get_page_content_archive($owner_guid, $lower = 0, $upper = 0) 
 function exercise_get_page_content_edit($page, $guid = 0, $revision = NULL) {
 
 	elgg_load_js('elgg.exercise');
+	elgg_load_js('elgg.raphael');	
+	elgg_load_js('elgg.raphaelJson');	
+	elgg_load_js('elgg.fee');
+	elgg_load_css('elgg.feeCSS');	
 
 	$return = array(
 		'filter' => '',

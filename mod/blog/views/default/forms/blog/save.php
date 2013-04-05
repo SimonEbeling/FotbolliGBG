@@ -104,7 +104,7 @@ $access_input = elgg_view('input/access', array(
 	'value' => $vars['access_id']
 ));
 
-$categories_input = elgg_view('input/categories', $vars);
+//$categories_input = elgg_view('input/categories', $vars);
 
 // hidden inputs
 $container_guid_input = elgg_view('input/hidden', array('name' => 'container_guid', 'value' => elgg_get_page_owner_guid()));
@@ -134,8 +134,6 @@ $draft_warning
 	<label for="blog_tags">$tags_label</label>
 	$tags_input
 </div>
-
-$categories_input
 
 <div>
 	<label for="blog_comments_on">$comments_label</label>

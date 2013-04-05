@@ -80,7 +80,10 @@ Se och kommentera den nya övningen:
 	'exercise:widget:description' => 'Visa dina senaste övningar',
 	'exercise:moreexercises' => 'Fler övningar',
 	'exercise:numbertodisplay' => 'Antal övningar som ska visas',
-	'exercise:noexercises' => 'Inga övningar'
+	'exercise:noexercises' => 'Inga övningar',
+	
+	// Football exercise editor
+	'exercise:fee' => 'Grafik'	
 );
 
 add_translation('sv', $swedish);

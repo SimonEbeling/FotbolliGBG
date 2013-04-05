@@ -5,6 +5,7 @@
  * @uses $vars['entity']
  */
 
+
 $linkstr = '';
 if (isset($vars['entity']) && $vars['entity'] instanceof ElggEntity) {
 
