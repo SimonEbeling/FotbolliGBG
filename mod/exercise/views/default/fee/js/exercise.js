@@ -1,4 +1,4 @@
-﻿				//TODO: Opacity handlers
+﻿
 				//TODO: Inte kunna dra paths utanför workspace
 
 var app = {
@@ -6,29 +6,36 @@ var app = {
 	//Members
 	
 	//Main setting
-	width: 672,
-	height: 672,	
-
-	//Empty Field setting
-	emptyHeight: 672,
+	width: 684,
+	height: 464,
 	
 	//Full Field setting
-	fullHeight: 772,	
+	fullHeight: 884,	
 	
 	//Half Field setting
-	halfHeight: 572,		
+	halfHeight: 464,
+
+	lineColor: '#FFF',
+	p: 10,
+	currentField: 'emptyHalfField',
 
 	//ToolMenu settings
 	//Players
 	playerAColor: "#c84141",
 	playerBColor: "#4174c8",
-	playerCColor: "#c841bd",
+	playerCColor: "#2b803f",
+	goalieColor: "#c8c341",	
 	playerStrokeColor: "#FFF",
 	playerSize: 8,
 	playerStroke: 2,
 	playerADescription: 'Spelare(lagA)',
 	playerBDescription: 'Spelare(lagB)',
 	playerCDescription: 'Spelare(lagC)',
+	playerA: 'playerA',
+	playerB: 'playerB',
+	playerC: 'playerC',	
+	goalieDescription: 'Målvakt',
+	goalie: 'goalie',
 
 	//Ball
 	ballColor: "#FFF",
@@ -36,12 +43,14 @@ var app = {
 	ballSize: 5,
 	ballStroke: 2,
 	ballTitle: "Boll",
+	ballName: 'ball',
 
 	//Cone
 	coneColor: "#f26600",
 	coneStrokeColor: "#000",
 	coneStroke: 1,
 	coneTitle: "Kona",
+	coneName: 'cone',
 
 	//Goal
 	goalColor: "#333",
@@ -49,6 +58,7 @@ var app = {
 	goalStroke: 2,
 	goalTitle: "Mål",
 	goalOpacity: 0.2,
+	goalName: 'goal',
 
 	//Curves
 	curveColor: "#000",
@@ -56,9 +66,14 @@ var app = {
 	arrowLength: 12,
 	arrowAngel: 25,
 	handlerAttr: {fill: "#EEE", stroke: "none", opacity: 0.6},
+	handlerStrokeAttr: {stroke: "#ccc", "stroke-dasharray": ". "},
+	handler: 'handler',
 	curveDescription: 'Bollbana',
+	curveName: 'curve',
 	curveDashedDescription: 'Spelarbana',
+	curveDashed: 'curveDashed',
 	defendCurveDescription: 'Försvarsbana',
+	defendCurve: 'defendCurve',
 	curvePosX: 30,
 	curvePosY: 30,
 	curveCurveX: 110,
@@ -66,6 +81,7 @@ var app = {
 
 	//DribbleCurve
 	dribbleCurveDescription: 'Spelare med boll-bana',
+	dribbleCurveName: 'dribbleCurve',
 	
 	removeItem: false
 	
@@ -73,12 +89,10 @@ var app = {
 	
 	//Methods
     app.init = function () {
-		
-		//Initialize Raphael-paper
-		app.r = Raphael("fee_workspace", app.width, app.height);	
-		
+				
+		app.field(app.currentField);
 		app.load();
-
+	
 		//Events archive		
 		$("#fee_archiveMenu a").click(function() {
 			switch(this.id){
@@ -95,22 +109,46 @@ var app = {
 				case 'clear':
 					app.clear();
 					break;
+				case 'emptyHalfField':
+					if(app.confirmField())
+						app.field(this.id);
+						app.currentField = this.id;
+					break;
+				case 'emptyFullField':
+					if(app.confirmField())
+						app.field(this.id);
+						app.currentField = this.id;						
+					break;					
+				case 'halfField':
+					if(app.confirmField())
+						app.field(this.id);
+						app.currentField = this.id;						
+					break;
+				case 'fullField':
+					if(app.confirmField())
+						app.field(this.id);
+						app.currentField = this.id;						
+					break;					
 			}
 			return false;
-		});			
+		});
+		
 
 		//Events tools			
 		$("#fee_toolsMenu a").click(function() {
 			switch(this.id){
 				case 'player1':
-					app.player(app.playerSize+2 + app.random(), app.playerSize+2 + app.random(), app.playerAColor, app.playerADescription);
+					app.player(app.playerSize+2 + app.random(), app.playerSize+2 + app.random(), app.playerAColor, app.playerADescription, app.playerA);
 					break;
 				case 'player2':
-					app.player(app.playerSize+2 + app.random(), app.playerSize+2 + app.random(), app.playerBColor, app.playerBDescription);
+					app.player(app.playerSize+2 + app.random(), app.playerSize+2 + app.random(), app.playerBColor, app.playerBDescription, app.playerB);
 					break;
 				case 'player3':
-					app.player(app.playerSize+2 + app.random(), app.playerSize+2 + app.random(), app.playerCColor, app.playerCDescription);
+					app.player(app.playerSize+2 + app.random(), app.playerSize+2 + app.random(), app.playerCColor, app.playerCDescription, app.playerC);
 					break;
+				case 'goalie':
+					app.player(app.playerSize+2 + app.random(), app.playerSize+2 + app.random(), app.goalieColor, app.goalieDescription, app.goalie);
+					break;					
 				case 'ball':
 					app.ball(app.ballSize+2 + app.random(), app.ballSize+2 + app.random());
 					break;
@@ -121,26 +159,35 @@ var app = {
 					app.goal(app.random()+5, app.random()+10, 0);
 					break;							
 				case 'playerPath':
-					app.curve(app.random()+80, app.random()+80, app.curveCurveX, app.curveCurveY, app.curvePosX, app.curvePosY, 'dashed', app.curveDashedDescription);
+					app.curve(app.random()+80, app.random()+80, app.curveCurveX, app.curveCurveY, app.curvePosX, app.curvePosY, 'dashed', app.curveDashedDescription, app.curveDashed);
 					break;
 				case 'ballPath':
-					app.curve(app.random()+80, app.random()+80, app.curveCurveX, app.curveCurveY, app.curvePosX, app.curvePosY, null, app.curveDescription);
+					app.curve(app.random()+80, app.random()+80, app.curveCurveX, app.curveCurveY, app.curvePosX, app.curvePosY, null, app.curveDescription, app.curveName);
 					break;
 				case 'playerDribble':
 					app.dribbleCurve(app.random()+80, app.random()+80, app.curvePosX, app.curvePosY);
 					break;	
 				case 'defendPath':
-					app.curve(app.random()+80, app.random()+80, app.curveCurveX, app.curveCurveY, app.curvePosX, app.curvePosY, 'dashed', app.defendCurveDescription);
+					app.curve(app.random()+80, app.random()+80, app.curveCurveX, app.curveCurveY, app.curvePosX, app.curvePosY, 'dashed', app.defendCurveDescription, app.defendCurve);
 					break;							
 			}
 
 			return false;
 		});
-    };	
+    };
+
+	app.confirmField = function(){
+		var c = confirm("Är du säker på att du vill byta plantyp? Detta kommer att rensa övningen på eventuella objekt.");
+		if(c)
+			return true;
+		else
+			return false;
+	}
 	
 	app.clear = function () {
-		app.r.clear();
-	};
+	if(confirm("Är du säker på att du vill rensa allt som finns i övningen?"))
+		app.field(app.currentField);
+	}
 	
 	app.load = function() {
 		var guid = $('input[name="guid"]').val();
@@ -155,14 +202,19 @@ var app = {
 				app.r.fromJSON(htmlData);
 			},
 			error: function(){
-				alert('Gick inte att hämta');
+				
 			}
 		});
 	};
 	
 	app.save = function() {
 		var guid = $('input[name="guid"]').val();
-		var json = app.r.toJSON();
+		var json = app.r.toJSON(function(el, data) {
+			data.typeId = el.data("typeId");
+			return data;
+			});
+
+			console.log(json);
 
 		$.ajax({type: "POST",
 			url: elgg.config.wwwroot + "ajax/view/fee/ajax/fee_save",
@@ -170,10 +222,10 @@ var app = {
 			cache: false,
 			data: {fee_json: json, guid: guid },
 			success: function(htmlData) {
-				console.log(htmlData);
+				
 			},
 			error: function(){
-				alert('Gick inte att spara');
+				
 			}
 		});		
 	};
@@ -181,13 +233,75 @@ var app = {
 	app.random = function() {			
 		return Math.floor((Math.random() * app.height/10)+20);
 	};
-									
-	app.player = function(x, y, color, title){
-		app.r.circle(x, y, app.playerSize)
+	
+	app.field = function(type){
+	
+	$("#fullField img").removeClass('pushed');
+	$("#halfField img").removeClass('pushed');
+	$("#emptyFullField img").removeClass('pushed');
+	$("#emptyHalfField img").removeClass('pushed');		
+	
+		if(app.r)
+			app.r.remove();
+		
+		var x = 212;
+		var path = [['M',x+30,app.p],['L',x+30,app.p+60],['L',x+200,app.p+60],['L',x+200,app.p],['M',x-70,app.p],['L',x-70,app.p+150],['L',x+300,app.p+150],['L',x+300,app.p]];
+		var arc = [['M',x+30,app.p+150],['C',x+62,app.p+190,x+168,app.p+190,x+200,app.p+150]];
+		var path2 = [['M',x+30,app.fullHeight-app.p],['L',x+30,app.fullHeight-app.p-60],['L',x+200,app.fullHeight-app.p-60],['L',x+200,app.fullHeight-app.p],['M',x-70,app.fullHeight-app.p],['L',x-70,app.fullHeight-app.p-150],['L',x+300,app.fullHeight-app.p-150],['L',x+300,app.fullHeight-app.p]];		
+		var arc2 = [['M',x+30,app.fullHeight-app.p-150],['C',x+62,app.fullHeight-app.p-190,x+168,app.fullHeight-app.p-190,x+200,app.fullHeight-app.p-150]];
+		var path3 = [['M',10,app.fullHeight/2],['L',app.width-app.p,app.fullHeight/2]];
+		
+		switch(type){
+			case 'emptyHalfField':
+				app.height = app.halfHeight;
+				app.r = Raphael("fee_workspace", app.width, app.height);
+				app.r.rect(app.p, app.p, app.width-app.p*2, app.halfHeight-app.p*2)
+				.attr({stroke: app.lineColor})
+				.data("typeId", type);	
+				$("#emptyHalfField img").addClass('pushed');
+				break;
+			case 'emptyFullField':
+				app.height = app.fullHeight;
+				app.r = Raphael("fee_workspace", app.width, app.height);
+				app.r.rect(app.p, app.p, app.width-app.p*2, app.fullHeight-app.p*2)
+				.attr({stroke: app.lineColor})
+				.data("typeId", type);	
+				$("#emptyFullField img").addClass('pushed');
+				break;				
+			case 'halfField':
+				app.height = app.halfHeight;
+				app.r = Raphael("fee_workspace", app.width, app.height);
+				app.r.rect(app.p, app.p, app.width-app.p*2, app.halfHeight-app.p*2)
+				.attr({stroke: app.lineColor})
+				.data("typeId", type);	
+				app.r.path(path).attr({stroke: app.lineColor});
+				app.r.path(arc).attr({stroke: app.lineColor});
+				$("#halfField img").addClass('pushed');
+				break;
+			case 'fullField':
+				app.height = app.fullHeight;
+				app.r = Raphael("fee_workspace", app.width, app.height);
+				app.r.rect(app.p, app.p, app.width-app.p*2, app.fullHeight-app.p*2)
+				.attr({stroke: app.lineColor})
+				.data("typeId", type);
+				app.r.path(path).attr({stroke: app.lineColor});
+				app.r.path(arc).attr({stroke: app.lineColor});
+				app.r.path(path2).attr({stroke: app.lineColor});
+				app.r.path(arc2).attr({stroke: app.lineColor});				
+				app.r.path(path3).attr({stroke: app.lineColor});
+				$("#fullField img").addClass('pushed');
+				break;				
+		}
+		
+	}
+										
+	app.player = function(x, y, color, title, type){
+		var player = app.r.circle(x, y, app.playerSize)
 		.attr("fill", color)
 		.attr("stroke", app.playerStrokeColor)
 		.attr("stroke-width", app.playerStroke)
 		.attr("title", title)
+		.data("typeId", type)
 		.click(function(){
 			if(app.removeItem)
 				this.remove();
@@ -204,11 +318,12 @@ var app = {
 	};
 
 	app.ball = function(x, y) {
-		app.r.circle(x, y, app.ballSize)
+		var ball = app.r.circle(x, y, app.ballSize)
 		.attr("fill", app.ballColor)
 		.attr("stroke", app.ballStrokeColor)
 		.attr("stroke-width", app.ballStroke)
 		.attr("title", app.ballTitle)
+		.data("typeId", app.ballName)		
 		.click(function(){
 			if(app.removeItem)
 				this.remove();
@@ -230,7 +345,8 @@ var app = {
 		.attr("fill", app.coneColor)
 		.attr("stroke", app.coneStrokeColor)
 		.attr("stroke-width", app.coneStroke)
-		.attr("title", app.coneTitle)		
+		.attr("title", app.coneTitle)
+		.data("typeId", app.coneName)		
 		.click(function(){
 			if(app.removeItem)
 				this.remove();
@@ -258,11 +374,11 @@ var app = {
 		.attr("stroke", app.goalStrokeColor)
 		.attr("stroke-width", app.goalStroke)
 		.attr("title", app.goalTitle)
+		.data("typeId", app.goalName)		
 		.click(function(){
 			if(app.removeItem)
 				this.remove();
 		});
-
 		goalPath.update = function (x, y) {
 			var X = Math.min(Math.max(goalAttr[0][1] + x, 5), app.width-10),
 				Y = Math.min(Math.max(goalAttr[0][2] + y, 10), app.height-5);
@@ -299,7 +415,7 @@ var app = {
 		}
 	};				
 									
-	app.curve = function(x, y, ax, ay, zx, zy, stroke, title) {
+	app.curve = function(x, y, ax, ay, zx, zy, stroke, title, type) {
 		if(stroke == "dashed"){
 			stroke = '-.';
 		}
@@ -312,15 +428,17 @@ var app = {
 		var path = [["M", x, y], ["C", ax, ay, zx, zy, zx, zy]],
 			path2 = [["M", x, y], ["L", ax, ay]],
 			path3 = app.setArrow( x, y, ax, ay, arrowLine),
-			curve = app.r.path(path).attr({stroke: app.curveColor, "stroke-width": app.curveWidth, "stroke-linecap": "round", 'stroke-dasharray': stroke, 'title': title}),
+			curve = app.r.path(path)
+			.attr({stroke: app.curveColor, "stroke-width": app.curveWidth, "stroke-linecap": "round", 'stroke-dasharray': stroke, 'title': title})
+			.data("typeId", type),	
 			controls = app.r.set(
-				app.r.path(path2).attr({stroke: "#ccc", "stroke-dasharray": ". "}),
+				app.r.path(path2).attr(app.handlerStrokeAttr).data("typeId", app.handler),
 				app.r.path(path3).attr({stroke: app.curveColor, "stroke-width": app.curveWidth, "stroke-linecap": "round", "fill": "#f00"}),							
-				app.r.circle(x, y, 5).attr(app.handlerAttr),
-				app.r.circle(ax, ay, 4).attr(app.handlerAttr),
-				app.r.circle(zx, zy, 5).attr(app.handlerAttr),
+				app.r.circle(x, y, 5).attr(app.handlerAttr).data("typeId", app.handler),
+				app.r.circle(ax, ay, 4).attr(app.handlerAttr).data("typeId", app.handler),
+				app.r.circle(zx, zy, 5).attr(app.handlerAttr).data("typeId", app.handler),
 				curve
-			);				
+			);
 		controls[2].update = function (x, y) {
 			var X = this.attr("cx") + x,
 				Y = this.attr("cy") + y;
@@ -368,17 +486,19 @@ var app = {
 			path2 = setCurve((ax-x)/3+x, (ay-y)/3+y, (ax-x)*2/3+x, (ay-y)*2/3+y),
 			path3 = setCurve((ax-x)*2/3+x, (ay-y)*2/3+y, ax, ay),
 			pathArrow = app.setArrow( x, y, ax, ay, 20),
-			curve = app.r.path(path).attr({stroke: app.curveColor, "stroke-width": app.curveWidth, "stroke-linecap": "round", 'title': app.dribbleCurveDescription}),
+			curve = app.r.path(path)
+			.attr({stroke: app.curveColor, "stroke-width": app.curveWidth, "stroke-linecap": "round", 'title': app.dribbleCurveDescription})
+			.data("typeId", app.dribbleCurveName),
 			curve2 = app.r.path(path2).attr({stroke: app.curveColor, "stroke-width": app.curveWidth, "stroke-linecap": "round"}),
 			curve3 = app.r.path(path3).attr({stroke: app.curveColor, "stroke-width": app.curveWidth, "stroke-linecap": "round"}),
 			controls = app.r.set(
 				app.r.path(pathArrow).attr({stroke: app.curveColor, "stroke-width": app.curveWidth, "stroke-linecap": "round", "fill": "#f00"}),							
-				app.r.circle(x, y, 5).attr(app.handlerAttr),
-				app.r.circle(ax, ay, 5).attr(app.handlerAttr),
+				app.r.circle(x, y, 5).attr(app.handlerAttr).data("typeId", app.handler),
+				app.r.circle(ax, ay, 5).attr(app.handlerAttr).data("typeId", app.handler),
 				curve,
 				curve2,
 				curve3
-			);
+			);	
 		function setCurve(x1, y1, x2, y2){
 			var angel = Raphael.angle(x1, y1, x2, y2);
 			var difference = Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));

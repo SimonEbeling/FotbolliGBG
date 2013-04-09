@@ -7,29 +7,31 @@ Purple: c841bd
 #fee_container{
 	width: 100%;
 	overflow:hidden;
-	border: 2px solid #000;
-	background: #62a850;	
+	border: 1px solid #aaa;
+	background: #ddd;
+
 }
 
 #fee_workspace {
 	background: #62a850;
 	float:right;
+	border-left: 1px solid #888;
+	border-top: 1px solid #888;
+	border-top-left-radius: 2px;
+	min-height: 464px;
+	min-width: 684px;	
 }
 
 #fee_archiveMenu{
 	padding: 5px;
 	background: #ddd;
 	overflow:hidden;
-	border-bottom: 2px solid #000;
 }
 
 #fee_toolsMenu{
-	height: 100%;
-	padding: 5px;
+	padding: 0 5px 0 5px;
 	background: #ddd;
-	float:left;
-	border-right: 2px solid #000;
-	border-bottom: 2px solid #000;	
+	float:left;	
 }
 
 #fee_toolsMenu a{
@@ -38,8 +40,8 @@ Purple: c841bd
 .toolsImg, .archiveImg, .fieldImg{
 	display: block;
 	padding: 5px;
-	width: 36px;
-	height: 36px;
+	width: 24px;
+	height: 24px;
 	margin-bottom: 5px;
 	background: #ccc;
 	/*border: 1px solid #999;*/
@@ -64,12 +66,29 @@ Purple: c841bd
    box-shadow:         inset 0 0 10px #000000;
 }
 
-.ajaxImg{
+.ajaxImg, .ajaxImgView{
 	float:left;
 	position:relative;
-	left: 340px;
-	top: 200px;
-	margin-bottom: -64px;
+	left: 260px;
+	top: 160px;
+	margin-bottom: -128px;
+}
+
+.ajaxImgView{
+	left: 220px;
+}
+
+/*---------View exercise-------*/
+.fee_view_container{
+	background: #62a850;
+	border: 1px solid #888;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	margin-bottom: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
+	min-height: 464px;
 }
 
 

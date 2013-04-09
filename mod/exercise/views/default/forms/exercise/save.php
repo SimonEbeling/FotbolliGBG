@@ -130,6 +130,8 @@ $guid_input = elgg_view('input/hidden', array('name' => 'guid', 'value' => $vars
 
 echo <<<___HTML
 
+$fee
+
 $draft_warning
 
 $categories_input
@@ -158,8 +160,6 @@ $categories_input
 	<label for="exercise_description">$body_label</label> <span> - $body_description</span>
 	$body_input
 </div>
-
-$fee
 
 <div>
 	<label for="exercise_comments_on">$comments_label</label>

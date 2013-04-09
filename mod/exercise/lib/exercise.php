@@ -14,6 +14,11 @@
  */
 function exercise_get_page_content_read($guid = NULL) {
 
+	elgg_load_js('elgg.raphael');	
+	elgg_load_js('elgg.raphaelJson');	
+	elgg_load_js('elgg.feeView');
+	elgg_load_css('elgg.feeCSS');
+
 	$return = array();
 
 	$exercise = get_entity($guid);

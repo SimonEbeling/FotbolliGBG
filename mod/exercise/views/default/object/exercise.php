@@ -63,12 +63,15 @@ if (elgg_in_context('widgets')) {
 
 if ($full) {
 
+	$fee_view = elgg_view('fee/view', $vars);
 	$tags_label = elgg_echo('exercise:tags');
 	$reason_label = elgg_echo('exercise:reason');
 	$execution_label = elgg_echo('exercise:execution');
 	$body_label = elgg_echo('exercise:body');
 
-	$body = "<h3>$tags_label</h3>";
+	$body = $fee_view;
+	
+	$body .= "<h3>$tags_label</h3>";
 
 	$body .= elgg_view('output/tags', array(
 		'value' => $exercise->tags,

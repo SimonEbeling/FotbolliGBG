@@ -5,9 +5,9 @@
  * @package exercise
  */
 
-$toolsMenuItems = array('player1', 'player2', 'player3', 'ball', 'cone', 'goal', 'playerPath', 'ballPath', 'playerDribble', 'defendPath');
+$toolsMenuItems = array('player1', 'player2', 'player3', 'goalie', 'ball', 'cone', 'goal', 'playerPath', 'ballPath', 'playerDribble', 'defendPath');
 $archiveMenuItems = array ('save', 'remove', 'clear');
-$fieldMenuItems = array ('fullField', 'halfField', 'emptyField');  
+$fieldMenuItems = array ('fullField', 'halfField', 'emptyFullField', 'emptyHalfField');  
 
 $url = $config->site->url;
 
@@ -17,8 +17,7 @@ foreach($archiveMenuItems as $item){
 	
 	$img = elgg_view('output/img', array(
 		'src' => "mod/exercise/graphics/fee/$item.png",
-		'class' => "archiveImg",
-		'width' => "32px"
+		'class' => "archiveImg"
 	));
 		
 	$archiveMenu .= elgg_view('output/url', array(
@@ -32,8 +31,7 @@ foreach($fieldMenuItems as $item){
 	
 	$img = elgg_view('output/img', array(
 		'src' => "mod/exercise/graphics/fee/$item.png",
-		'class' => "fieldImg",
-		'width' => "32px"
+		'class' => "fieldImg"
 	));
 		
 	$archiveMenu .= elgg_view('output/url', array(
@@ -47,8 +45,7 @@ foreach($toolsMenuItems as $item){
 	
 	$img = elgg_view('output/img', array(
 		'src' => "mod/exercise/graphics/fee/$item.png",
-		'class' => "toolsImg",
-		'width' => "32px"
+		'class' => "toolsImg"
 	));
 		
 	$toolsMenu .= elgg_view('output/url', array(
@@ -59,15 +56,14 @@ foreach($toolsMenuItems as $item){
 }
 
 $ajaxImg = elgg_view('output/img', array(
-	'src' => "mod/exercise/graphics/fee/ajax.gif",
+	'src' => "mod/exercise/graphics/fee/ajax2.gif",
 	'class' => "ajaxImg",
-	'width' => "64px"
+
 ));
 
 echo "
 <label>$titel</label>
 <div id='fee_container'>
-	<div id='fee_fieldMenu'>$fieldMenu</div>
 	<div id='fee_archiveMenu'>$archiveMenu</div>	
 	$ajaxImg
 	<div id='fee_workspace'></div>

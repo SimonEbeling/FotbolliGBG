@@ -35,6 +35,10 @@ function exercise_init() {
 	$fee_js = 'mod/exercise/views/default/fee/js/exercise.js';
 	elgg_register_js('elgg.fee', $fee_js);
 	
+	// register the exercise's fee JavaScript
+	$fee_view_js = 'mod/exercise/views/default/fee/js/exercise_viewer.js';
+	elgg_register_js('elgg.feeView', $fee_view_js);	
+	
 	// register the raphael JavaScript
 	$raphael_js = 'mod/exercise/views/default/fee/js/raphael.js';
 	elgg_register_js('elgg.raphael', $raphael_js);
