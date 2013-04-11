@@ -5,11 +5,12 @@ function appViewer(){
 	this.halfHeight = 464;
 	this.fullHeight = 884;
 	this.lineColor = "#FFF";
-	this.guid = $('input[name="entity_guid"]').val();
+	//this.guid = $('input[name="entity_guid"]').val();
 	this.r = null;
 }
 
-appViewer.prototype.init = function(){
+appViewer.prototype.init = function(guid){
+		this.guid = guid
 		this.field('emptyHalfField');
 		this.load();
 };
@@ -72,7 +73,8 @@ appViewer.prototype.load = function(){
 			data: {guid: this.guid },
 			success: function(htmlData) {
 				$(".ajaxImgView").remove();
-				object.r.fromJSONView(htmlData, object);
+				if(htmlData)
+					object.r.fromJSONView(htmlData, object);
 			},
 			error: function(){
 				
@@ -80,7 +82,3 @@ appViewer.prototype.load = function(){
 		});
 };
 
-$(window).load(function(){  
-	var view = new appViewer();
-	view.init();
-}); 

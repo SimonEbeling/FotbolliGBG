@@ -5,10 +5,15 @@
  * @package ElggCategories
  *
  * @uses $vars['entity'] The entity being edited or created
+ * @uses $vars['preSelected'] The entity being edited or created
  */
 
 if (isset($vars['entity']) && $vars['entity'] instanceof ElggEntity) {
 	$selected_categories = $vars['entity']->universal_categories;
+}
+
+if (isset($vars['preSelected'])){
+	$selected_categories = $vars['preSelected'];
 }
 
 // use sticky values if set

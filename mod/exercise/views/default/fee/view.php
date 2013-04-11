@@ -18,5 +18,6 @@ $ajaxImg = elgg_view('output/img', array(
 echo $ajaxImg;
 echo "<div id='fee_view_$guid' class='fee_view_container'></div>";
 echo "<script>
-
+	var view = new appViewer();
+	view.init($guid);
 </script>";

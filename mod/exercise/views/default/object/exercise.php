@@ -17,7 +17,7 @@ $container = $exercise->getContainerEntity();
 $categories = elgg_view('output/categories', $vars);
 $excerpt = $exercise->excerpt;
 if (!$excerpt) {
-	$excerpt = elgg_get_excerpt($exercise->description);
+	$excerpt = elgg_get_excerpt($exercise->reason);
 }
 
 $owner_icon = elgg_view_entity_icon($owner, 'tiny');
@@ -114,16 +114,47 @@ if ($full) {
 	));
 
 } else {
-	// brief view
+	$titleLink = elgg_view('output/url', array(
+		'href' => $exercise->getURL(),
+		'text' => $exercise->title,		
+	));
+	$fee_view = elgg_view('fee/view', $vars);
+	$tags_label = elgg_echo('exercise:tags');
 
+	$body .= elgg_view('output/tags', array(
+		'value' => $exercise->tags,
+		'class' => 'exercise-tags',
+	));
+	$body .= $fee_view;	
+	
+	$params = array(
+		'title' => false,
+		'metadata' => $metadata,
+		'subtitle' => $subtitle,
+	);
+		
+	$summary = elgg_view('object/elements/summary', $params);
+	echo "<h2>$titleLink</h2>";	
+	echo elgg_view('object/elements/full', array(
+		'summary' => $summary,
+		'icon' => $owner_icon,
+		'body' => $body,
+	));
+	
+	//$anno = $exercise->getAnnotations();
+	//var_dump($anno);
+
+}
+
+	// brief view
+	/*
 	$params = array(
 		'entity' => $exercise,
 		'metadata' => $metadata,
 		'subtitle' => $subtitle,
-		'content' => $excerpt,
 	);
 	$params = $params + $vars;
 	$list_body = elgg_view('object/elements/summary', $params);
 
 	echo elgg_view_image_block($owner_icon, $list_body);
-}
+	*/

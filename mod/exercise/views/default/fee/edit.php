@@ -5,7 +5,7 @@
  * @package exercise
  */
 
-$toolsMenuItems = array('player1', 'player2', 'player3', 'goalie', 'ball', 'cone', 'goal', 'playerPath', 'ballPath', 'playerDribble', 'defendPath');
+$toolsMenuItems = array('player1', 'player2', 'player3', 'goalie', 'ball', 'goal', 'linePath', 'cone', 'playerPath', 'ballPath', 'playerDribble', 'defendPath');
 $archiveMenuItems = array ('save', 'remove', 'clear');
 $fieldMenuItems = array ('fullField', 'halfField', 'emptyFullField', 'emptyHalfField');  
 

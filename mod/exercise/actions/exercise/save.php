@@ -53,6 +53,7 @@ $values = array(
 	'reason' => '',
 	'execution' => '',
 	'description' => '',
+	'fee_data' => '',
 	'status' => 'draft',
 	'access_id' => ACCESS_DEFAULT,
 	'comments_on' => 'On',
@@ -70,7 +71,7 @@ foreach ($values as $name => $default) {
 	} else {
 		$value = get_input($name, $default);
 	}
-
+echo var_dump($value);
 	if (in_array($name, $required) && empty($value)) {
 		$error = elgg_echo("exercise:error:missing:$name");
 	}

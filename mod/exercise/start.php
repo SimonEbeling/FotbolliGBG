@@ -36,6 +36,10 @@ function exercise_init() {
 	elgg_register_js('elgg.fee', $fee_js);
 	
 	// register the exercise's fee JavaScript
+	$exerciseFilter_js = 'mod/exercise/views/default/js/exercise/exerciseFilter.js';
+	elgg_register_js('elgg.exerciseFilter', $exerciseFilter_js);	
+	
+	// register the exercise's fee JavaScript
 	$fee_view_js = 'mod/exercise/views/default/fee/js/exercise_viewer.js';
 	elgg_register_js('elgg.feeView', $fee_view_js);	
 	

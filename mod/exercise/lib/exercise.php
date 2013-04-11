@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * exercise helper functions
  *
@@ -60,15 +60,90 @@ function exercise_get_page_content_read($guid = NULL) {
  */
 function exercise_get_page_content_list($container_guid = NULL) {
 
+	elgg_load_js('elgg.raphael');	
+	elgg_load_js('elgg.raphaelJson');	
+	elgg_load_js('elgg.feeView');
+	elgg_load_js('elgg.exerciseFilter');
+	elgg_load_css('elgg.feeCSS');
+	
+	$likes_metastring = get_metastring_id('likes');
+	$category_metastring = get_metastring_id('universal_categories');
+	$dbprefix = elgg_get_config('dbprefix');	
+		
 	$return = array();
-
-	$return['filter_context'] = $container_guid ? 'mine' : 'all';
-
+	
+	//Main options
 	$options = array(
 		'type' => 'object',
 		'subtype' => 'exercise',
-		'full_view' => false,
+		'full_view' => false,		
+	);	
+	
+	//Gets/Sets the category-input
+	$selectedCategories = (array) get_input('universal_categories_list');
+
+	if(isset($selectedCategories) && count($selectedCategories) > 0){
+
+		for($i = 0; $i < count($selectedCategories); $i++){
+			if($i == 0 && $selectedCategories[$i] != '0'){
+				$whereArg .= " AND BINARY n_table9.value_id = ". get_metastring_id($selectedCategories[$i]);
+			}
+			else{
+				$whereArg .= " OR BINARY n_table9.value_id = ". get_metastring_id($selectedCategories[$i]);
+			}
+		}
+		$whereString = "(((n_table9.name_id = $category_metastring ".$whereArg." )))";	
+		$vars['preSelected'] = $selectedCategories;		
+
+		//Category(filter) options
+		$categoryOptions = array(
+			'joins' => array(
+				"JOIN elgg_metadata n_table9 
+				on e.guid = n_table9.entity_guid "
+				),
+			'wheres' => $whereString
+		);
+
+		//Merge with main options
+		$options = array_merge($options, $categoryOptions);		
+	
+	}
+			
+	//Gets/Sets sorting-input
+	$varsDrop['options_values']	= array(
+	'date' => elgg_echo('exercise:latestDate'),	
+	'like' => elgg_echo('exercise:mostLiked'),
 	);
+	
+	$varsDrop['name'] = 'sort';
+	
+	switch(get_input('sort')){
+		
+		//Sort on date
+		case 'date':
+			$varsDrop['value'] = 'date';		
+			break;
+
+		//Sort on likes			
+		case 'like':
+			$likesOption = array(
+				'annotation_names' => array('likes'),
+				'selects' => array(
+					"(SELECT count(distinct l.id) FROM {$dbprefix}annotations l WHERE l.name_id = $likes_metastring AND l.entity_guid = e.guid) AS likes",
+					),
+				'order_by' => 'likes DESC',	
+			);
+			$varsDrop['value'] = 'like';
+			//Merge with main options
+			$options = array_merge($options, $likesOption);				
+			break;
+	}
+	
+	$sortLabel = elgg_echo('exercise:sort');
+	$dropdown = elgg_view('input/dropdown', $varsDrop);
+	$sortButton = "<button type='submit' class='elgg-button-submit elgg-button'>$sortLabel</button>";
+			
+	$return['filter_context'] = $container_guid ? 'mine' : 'all';
 
 	$current_user = elgg_get_logged_in_user_entity();
 
@@ -116,12 +191,23 @@ function exercise_get_page_content_list($container_guid = NULL) {
 			array('name' => 'status', 'value' => 'published'),
 		);
 	}
+	
+	//Creates filter for categories
+	$categories = elgg_view('input/categories', $vars);
+	$buttonLabel = elgg_echo('exercise:filter');
+	$button = "<button type='submit' class='elgg-button-submit elgg-button'>$buttonLabel</button>";
+	$form = "<form method='POST' id='filter_exercise'>
+		<div class='filter_part'>$categories</div>
+		<div class='filter_part'>$categories</div>
+	$button
+	<div class='exercise_sort'>$dropdown $sortButton</div>
+	</form>";	
 
 	$list = elgg_list_entities_from_metadata($options);
 	if (!$list) {
-		$return['content'] = elgg_echo('exercise:none');
+		$return['content'] = $form . elgg_echo('exercise:none');
 	} else {
-		$return['content'] = $list;
+		$return['content'] = $form . $list;
 	}
 
 	return $return;
@@ -134,6 +220,11 @@ function exercise_get_page_content_list($container_guid = NULL) {
  * @return array
  */
 function exercise_get_page_content_friends($user_guid) {
+
+	elgg_load_js('elgg.raphael');	
+	elgg_load_js('elgg.raphaelJson');	
+	elgg_load_js('elgg.feeView');
+	elgg_load_css('elgg.feeCSS');
 
 	$user = get_user($user_guid);
 	if (!$user) {

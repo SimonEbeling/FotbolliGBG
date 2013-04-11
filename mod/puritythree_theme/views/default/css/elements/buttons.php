@@ -152,3 +152,53 @@ a.elgg-button {
 	-moz-border-radius:4px 4px 0 0;
 	border-radius:4px 4px 0 0;
 }
+
+#filter_exercise li>label{
+	display: block;
+	background: #F7F7F7;
+	color: #333;
+	cursor: pointer;
+	border: 1px solid #DDD;
+	border-bottom: 1px solid #777;
+	border-right: 1px solid #777;	
+	padding: 4px 10px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#1a000000',GradientType=0 ); /* IE6-9 */
+}
+
+#filter_exercise input[type="checkbox"]{
+	display:none;
+}
+
+#filter_exercise li>label.selected{
+	background: #FFF500;
+	border: 1px solid #cfc700;
+	border-bottom: 1px solid #fef63e;
+	border-right: 1px solid #fef63e;
+}
+.filter_part{
+	width: 47%;
+	float:left;
+	margin-left: 6%;
+}
+
+.filter_part:first-child{
+	margin-left: 0;
+}
+
+#filter_exercise .elgg-button-submit{
+
+}
+
+.exercise_sort{
+	float:right;
+}
+

@@ -65,7 +65,7 @@ var app = {
 	curveWidth: 1,
 	arrowLength: 12,
 	arrowAngel: 25,
-	handlerAttr: {fill: "#EEE", stroke: "none", opacity: 0.6},
+	handlerAttr: {fill: "#EEE", stroke: "none", opacity: 0.3},
 	handlerStrokeAttr: {stroke: "#ccc", "stroke-dasharray": ". "},
 	handler: 'handler',
 	curveDescription: 'Bollbana',
@@ -82,6 +82,12 @@ var app = {
 	//DribbleCurve
 	dribbleCurveDescription: 'Spelare med boll-bana',
 	dribbleCurveName: 'dribbleCurve',
+	
+	lineDescription: 'linje',
+	lineName: 'line',
+	linePathWidth: 1,
+	linePathColor: '#315428',
+	lineOpacity: 0.6,
 	
 	removeItem: false
 	
@@ -133,7 +139,6 @@ var app = {
 			return false;
 		});
 		
-
 		//Events tools			
 		$("#fee_toolsMenu a").click(function() {
 			switch(this.id){
@@ -169,12 +174,21 @@ var app = {
 					break;	
 				case 'defendPath':
 					app.curve(app.random()+80, app.random()+80, app.curveCurveX, app.curveCurveY, app.curvePosX, app.curvePosY, 'dashed', app.defendCurveDescription, app.defendCurve);
-					break;							
+					break;
+				case 'linePath':
+					app.line(app.random()+80, app.random()+80, app.curveCurveX, app.curveCurveY, app.curvePosX, app.curvePosY, 'dashed', app.defendCurveDescription, app.defendCurve);
+					break;						
 			}
 
 			return false;
 		});
-    };
+    
+		//Saves when form is posted
+		$('input[name="save"]').click(function() {
+			app.save();
+		});
+	
+	};
 
 	app.confirmField = function(){
 		var c = confirm("Är du säker på att du vill byta plantyp? Detta kommer att rensa övningen på eventuella objekt.");
@@ -199,7 +213,8 @@ var app = {
 			data: {guid: guid },
 			success: function(htmlData) {
 				$(".ajaxImg").remove();
-				app.r.fromJSON(htmlData);
+				if(htmlData)
+					app.r.fromJSON(htmlData);
 			},
 			error: function(){
 				
@@ -208,15 +223,19 @@ var app = {
 	};
 	
 	app.save = function() {
-		var guid = $('input[name="guid"]').val();
+		//var guid = $('input[name="guid"]').val();
 		var json = app.r.toJSON(function(el, data) {
 			data.typeId = el.data("typeId");
 			return data;
 			});
-
-			console.log(json);
-
-		$.ajax({type: "POST",
+		
+		$('<input>').attr({
+			type: 'hidden',
+			name: 'fee_data',
+			value: json,
+		}).appendTo('form');
+		
+		/*$.ajax({type: "POST",
 			url: elgg.config.wwwroot + "ajax/view/fee/ajax/fee_save",
 			dataType: "html",
 			cache: false,
@@ -227,7 +246,7 @@ var app = {
 			error: function(){
 				
 			}
-		});		
+		});	*/	
 	};
 						
 	app.random = function() {			
@@ -549,7 +568,39 @@ var app = {
 				controls.remove();
 			}
 		});
-	};				
+	};
+
+	app.line = function(x, y, ax, ay){
+		var path = [["M", x, y], ["L", ax, ay]],
+			line = app.r.path(path)
+			.attr({stroke: app.linePathColor, "stroke-width": app.linePathWidth, "stroke-linecap": "round", 'title': app.lineDescription, 'opacity': app.lineOpacity})
+			.data("typeId", app.lineName),
+			controls = app.r.set(						
+				app.r.circle(x, y, 5).attr(app.handlerAttr).data("typeId", app.handler),
+				app.r.circle(ax, ay, 5).attr(app.handlerAttr).data("typeId", app.handler),
+				line
+			);					
+		controls[0].update = function (x, y) {
+			var X = this.attr("cx") + x,
+				Y = this.attr("cy") + y;
+			this.attr({cx: X, cy: Y});
+			path = [["M", X, Y], ["L", path[1][1], path[1][2]]],
+			line.attr({path: path});
+		};
+		controls[1].update = function (x, y) {
+			var X = this.attr("cx") + x,
+				Y = this.attr("cy") + y;
+			this.attr({cx: X, cy: Y});
+			path = [["M", path[0][1], path[0][2]], ["L", X, Y]],
+			line.attr({path: path});
+		};
+		controls.drag(app.move, app.up);
+		controls.click(function(){
+			if(app.removeItem){
+				controls.remove();
+			}
+		});
+	};	
 	
 	app.setArrow = function(x1, y1, x2, y2, stoppLine){
 	

@@ -19,6 +19,11 @@ $english = array(
 	'exercise:group' => 'Group exercise',
 	'exercise:enableexercise' => 'Enable group exercise',
 	'exercise:write' => 'Write a exercise post',
+	'exercise:filter' => 'Filter',
+	'exercise:sort' => 'Sort',
+	'exercise:mostLiked' => 'Most Liked',
+	'exercise:latestDate' => 'Latest date',
+	
 
 	// Editing
 	'exercise:add' => 'Add exercise post',

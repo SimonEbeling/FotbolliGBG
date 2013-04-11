@@ -34,6 +34,8 @@
 			paper = this
 			;
 
+		if(!json) return false;			
+			
 		if ( typeof json === 'string' ) json = JSON.parse(json);
 		
 		//Checking if there is field saved
@@ -74,8 +76,18 @@
 								x2 = json[i].attrs.path[1][1],
 								y2 = json[i].attrs.path[1][2];
 							var angel = Raphael.angle(x1, y1, x2, y2)-90;
+							if(angel==-90)
+								angel = 270;
 							app.goal(x1, y1, angel);
 							break;
+							
+						case app.lineName:
+							var x = json[i].attrs.path[0][1],
+								y = json[i].attrs.path[0][2],
+								zx = json[i].attrs.path[1][1],
+								zy = json[i].attrs.path[1][2];
+							app.line(x, y, zx, zy);
+							break;							
 							
 						case app.coneName:
 							app.cone(json[i].attrs.path[0][1], json[i].attrs.path[0][2]);
@@ -130,7 +142,9 @@
 	Raphael.fn.fromJSONView = function(json, object, callback) {
 		
 		var el;
-
+		
+		if(!json) return false;
+		
 		if ( typeof json === 'string' ) json = JSON.parse(json);
 		
 		//Checking if there is field saved
@@ -141,7 +155,6 @@
 
 			for ( var i in json ) {
 				if ( json.hasOwnProperty(i) ) {
-				console.log(json[i]);
 					if(json[i].data["typeId"] == 'handler'){
 					
 					}

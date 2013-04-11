@@ -19,6 +19,10 @@ $swedish = array(
 	'exercise:group' => 'Gruppövning',
 	'exercise:enableexercise' => 'Aktivera gruppövning',
 	'exercise:write' => 'Skriv en övning',
+	'exercise:filter' => 'Filtrera',
+	'exercise:sort' => 'Sortera',
+	'exercise:mostLiked' => 'Mest gillade',
+	'exercise:latestDate' => 'Senast inlagda',	
 
 	// Editing
 	'exercise:add' => 'Skapa en övning',
